@@ -19,7 +19,18 @@ public class HttpServer {
     }
 
     private void handleClients() {
-        try {
+        while (true) {
+            try {
+                handleClient();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private void handleClient() throws IOException {
+
             Socket clientSocket = serverSocket.accept();
 
             String[] requestLine = HttpMessage.readLine(clientSocket).split(" ");
@@ -51,9 +62,6 @@ public class HttpServer {
                         responseText;
                 clientSocket.getOutputStream().write(response.getBytes());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 
