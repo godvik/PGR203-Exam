@@ -25,4 +25,10 @@ class HttpClientTest {
         HttpClient client = new HttpClient("httpbin.org", 80, "/html");
         assertTrue(client.getMessageBody().startsWith("<!DOCTYPE html>\n<html>"));
     }
+
+    @Test
+    void shouldReadCaseInsensitiveResponseHeaders() throws IOException {
+        HttpClient client = new HttpClient("httpbin.org", 80, "/html");
+        assertEquals("text/html; charset=utf-8", client.getHeader("CoNtEnT-TyPe"));
+    }
 }
