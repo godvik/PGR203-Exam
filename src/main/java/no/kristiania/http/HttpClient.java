@@ -24,16 +24,16 @@ public class HttpClient {
         String headerLine;
         while (!(headerLine = readLine(socket)).isBlank()) {
             int colonPos = headerLine.indexOf(':');
-            String key = headerLine.substring(0, colonPos);
+            String key = headerLine.substring(0, colonPos).toLowerCase();
             String value = headerLine.substring(colonPos + 1).trim();
             headerFields.put(key, value);
         }
 
-        if (headerFields.containsKey("Content-Length")) {
+        if (headerFields.containsKey("Content-Length".toLowerCase())) {
             this.messageBody = readLine(socket, getContentLength());
         }
 
-        this.statusCode = Integer.parseInt(startLine.toString().split(" ")[1]);
+        this.statusCode = Integer.parseInt(startLine.split(" ")[1]);
 
 
     }
@@ -71,7 +71,7 @@ public class HttpClient {
     }
 
     public String getHeader(String headerName) {
-        return headerFields.get(headerName);
+        return headerFields.get(headerName.toLowerCase());
     }
 
     public String getMessageBody() {
