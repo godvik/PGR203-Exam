@@ -15,4 +15,11 @@ class HttpServerTest {
         assertEquals(404, client.getStatusCode());
     }
 
+    @Test
+    void shouldIncludeRequestTargetIn404Message() throws IOException {
+        HttpServer server = new HttpServer(1002);
+        HttpClient client = new HttpClient("localhost", 1002, "/does-not-exist");
+        assertEquals("Not found /does-not-exist", client.getMessageBody());
+    }
+
 }
