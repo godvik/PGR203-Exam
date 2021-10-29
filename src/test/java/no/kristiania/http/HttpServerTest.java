@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -37,6 +38,13 @@ class HttpServerTest {
         assertEquals(fileContent, client.getMessageBody());
     }
 
+    @Test
+    void shouldUseFileExtensionForContentType() {
+        server.setRoot(Paths.get("target/test-classes"));
+        String fileContent = "<p>Hello</p> " + LocalTime.now();
+        Files.write(Paths.get("target/test-classes/example-file.html"), fileContent.getBytes());
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/example-file.html");
+        assertEquals("text/html", client.getHeader("Content-Type"));
 
-
+    }
 }
