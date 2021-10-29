@@ -18,8 +18,11 @@ public class HttpServer {
     private void handleClients() {
         try {
             Socket clientSocket = serverSocket.accept();
-            String responseText = "File not found";
-            String response = "HTTP/1.1 404 " + responseText + "\r\n" +
+
+            String[] requestLine = HttpMessage.readLine(clientSocket).split(" ");
+            String requestTarget = requestLine[1];
+            String responseText = "File not found " + requestTarget;
+            String response = "HTTP/1.1 404 Not found" + "\r\n" +
                     "Content-Length: " + responseText.getBytes().length + "\r\n" +
                     "Connection: close" + "\r\n" +
                     "\r\n" +
@@ -28,5 +31,11 @@ public class HttpServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    public int getPort() {
+        return serverSocket.getLocalPort();
     }
 }
