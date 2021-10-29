@@ -39,7 +39,7 @@ class HttpServerTest {
     }
 
     @Test
-    void shouldUseFileExtensionForContentType() {
+    void shouldUseFileExtensionForContentType() throws IOException {
         server.setRoot(Paths.get("target/test-classes"));
         String fileContent = "<p>Hello</p> " + LocalTime.now();
         Files.write(Paths.get("target/test-classes/example-file.html"), fileContent.getBytes());

@@ -24,12 +24,20 @@ public class HttpServer {
 
             String[] requestLine = HttpMessage.readLine(clientSocket).split(" ");
             String requestTarget = requestLine[1];
+            String contentType = "text/plain";
+
+            if (requestTarget.endsWith(".html")) {
+                contentType = "text/html";
+            } else if (requestTarget.endsWith(".css")) {
+                contentType = "text/css";
+            }
 
 
             if (requestTarget.equals("/does-not-exist")) {
                 String responseText = "File not found " + requestTarget;
                 String response = "HTTP/1.1 404 Not found" + "\r\n" +
                         "Content-Length: " + responseText.getBytes().length + "\r\n" +
+                        "Content-Type: " + contentType + "\r\n" +
                         "Connection: close" + "\r\n" +
                         "\r\n" +
                         responseText;
@@ -38,6 +46,7 @@ public class HttpServer {
                 String responseText = Files.readString(rootDirectory.resolve(requestTarget.substring(1)));
                 String response = "HTTP/1.1 200 OK" + "\r\n" +
                         "Content-Length: " + responseText.getBytes().length + "\r\n" +
+                        "Content-Type: " + contentType + "\r\n" +
                         "\r\n" +
                         responseText;
                 clientSocket.getOutputStream().write(response.getBytes());
