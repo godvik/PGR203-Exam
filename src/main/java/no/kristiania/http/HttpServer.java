@@ -5,12 +5,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HttpServer {
 
 
     private ServerSocket serverSocket;
     private Path rootDirectory;
+    private List<String> questionnaires;
+    private final List<Question> questions = new ArrayList<>();
 
     public HttpServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
@@ -43,17 +47,7 @@ public class HttpServer {
                 contentType = "text/css";
             }
 
-
-            if (requestTarget.equals("/does-not-exist")) {
-                String responseText = "File not found " + requestTarget;
-                String response = "HTTP/1.1 404 Not found" + "\r\n" +
-                        "Content-Length: " + responseText.getBytes().length + "\r\n" +
-                        "Content-Type: " + contentType + "\r\n" +
-                        "Connection: close" + "\r\n" +
-                        "\r\n" +
-                        responseText;
-                clientSocket.getOutputStream().write(response.getBytes());
-            } else if (rootDirectory != null && Files.exists(rootDirectory.resolve(requestTarget.substring(1)))) {
+            if ((rootDirectory != null && Files.exists(rootDirectory.resolve(requestTarget.substring(1))))) {
                 String responseText = Files.readString(rootDirectory.resolve(requestTarget.substring(1)));
                 String response = "HTTP/1.1 200 OK" + "\r\n" +
                         "Content-Length: " + responseText.getBytes().length + "\r\n" +
@@ -61,9 +55,21 @@ public class HttpServer {
                         "\r\n" +
                         responseText;
                 clientSocket.getOutputStream().write(response.getBytes());
+            } else {
+                response404(clientSocket, requestTarget, contentType);
             }
     }
 
+    private void response404(Socket clientSocket, String requestTarget, String contentType) throws IOException {
+        String responseText = "File not found " + requestTarget;
+        String response = "HTTP/1.1 404 Not found" + "\r\n" +
+                "Content-Length: " + responseText.getBytes().length + "\r\n" +
+                "Content-Type: " + contentType + "\r\n" +
+                "Connection: close" + "\r\n" +
+                "\r\n" +
+                responseText;
+        clientSocket.getOutputStream().write(response.getBytes());
+    }
 
 
     public int getPort() {
@@ -72,5 +78,13 @@ public class HttpServer {
 
     public void setRoot(Path rootDirectory) {
         this.rootDirectory = rootDirectory;
+    }
+
+    public void setQuestionToQuestionnaire(List<String> question) {
+        this.questionnaires = question;
+    }
+
+    public List<Question> getQuestion() {
+        return questions;
     }
 }

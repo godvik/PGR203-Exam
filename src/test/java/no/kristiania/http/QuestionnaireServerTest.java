@@ -6,11 +6,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static java.net.URLDecoder.decode;
 import static java.net.URLEncoder.encode;
 
 
-//import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class QuestionnaireServerTest {
     private final HttpServer server = new HttpServer(0);
@@ -19,9 +18,9 @@ public class QuestionnaireServerTest {
     }
 
     @Test
-    void shouldPostNewQuestion() {
-        String question = "On a scale from 1-5, how happy are you?";
-        String encodedQuestion = encode(question, StandardCharsets.UTF_8);
+    void shouldPostNewQuestion() throws IOException {
+        String questionQuery = "On a scale from 1-5, how happy are you?";
+        String encodedQuestion = encode(questionQuery, StandardCharsets.UTF_8);
         server.setQuestionToQuestionnaire(List.of("Environment", "Education"));
         PostHttpClient client = new PostHttpClient("localhost", server.getPort(), "/api/questions",
                 "questionnaire=Education&title=Happy&text=" + encodedQuestion);

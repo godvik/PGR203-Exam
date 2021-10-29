@@ -53,4 +53,6 @@ class HttpServerTest {
         assertEquals(404, new HttpClient("localhost", server.getPort(), "/does-not-exist").getStatusCode());
         assertEquals(404, new HttpClient("localhost", server.getPort(), "/does-not-exist").getStatusCode());
     }
+
+
 }
