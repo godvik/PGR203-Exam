@@ -47,4 +47,10 @@ class HttpServerTest {
         assertEquals("text/html", client.getHeader("Content-Type"));
 
     }
+
+    @Test
+    void shouldHandleMultipleClients() throws IOException {
+        assertEquals(404, new HttpClient("localhost", server.getPort(), "/does-not-exist").getStatusCode());
+        assertEquals(404, new HttpClient("localhost", server.getPort(), "/does-not-exist").getStatusCode());
+    }
 }
