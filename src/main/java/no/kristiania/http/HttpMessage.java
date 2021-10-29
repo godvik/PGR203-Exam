@@ -7,6 +7,18 @@ import java.util.HashMap;
 
 public class HttpMessage {
 
+    private String messageBody;
+    private final HashMap<String, String> headerFields = new HashMap<>();
+    private final String startLine;
+
+    public HttpMessage(Socket socket) throws IOException {
+        this.startLine = HttpMessage.readLine(socket);
+        readHeaderLine(headerFields, socket);
+        if (headerFields.containsKey("Content-Length".toLowerCase())) {
+            messageBody = readLine(socket, getContentLength());
+        }
+
+    }
 
     static String readLine(Socket socket) throws IOException {
         int c;
@@ -46,5 +58,21 @@ public class HttpMessage {
                 "Host: " + host + "\r\n" +
                 "\r\n";
         socket.getOutputStream().write(request.getBytes());
+    }
+
+    public String getMessageBody() {
+        return messageBody;
+    }
+
+    public int getContentLength() {
+        return Integer.parseInt(getHeader("Content-Length"));
+    }
+
+    public String getHeader(String headerName) {
+        return headerFields.get(headerName.toLowerCase());
+    }
+
+    public String getStartLine() {
+        return startLine;
     }
 }
