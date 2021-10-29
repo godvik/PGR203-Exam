@@ -12,22 +12,9 @@ public class HttpClient {
 
     public HttpClient(String host, int port, String requestTarget) throws IOException {
         Socket socket = new Socket(host, port);
-        String request = "GET " + requestTarget + " HTTP/1.1\r\n" +
-                "Host: " + host + "\r\n" +
-                "\r\n";
-        socket.getOutputStream().write(request.getBytes());
-
+        executeRequest(host, requestTarget, socket);
         String startLine = readLine(socket);
-
-
-
-        String headerLine;
-        while (!(headerLine = readLine(socket)).isBlank()) {
-            int colonPos = headerLine.indexOf(':');
-            String key = headerLine.substring(0, colonPos).toLowerCase();
-            String value = headerLine.substring(colonPos + 1).trim();
-            headerFields.put(key, value);
-        }
+        readHeaderLine(socket);
 
         if (headerFields.containsKey("Content-Length".toLowerCase())) {
             this.messageBody = readLine(socket, getContentLength());
@@ -36,6 +23,23 @@ public class HttpClient {
         this.statusCode = Integer.parseInt(startLine.split(" ")[1]);
 
 
+    }
+
+    private void executeRequest(String host, String requestTarget, Socket socket) throws IOException {
+        String request = "GET " + requestTarget + " HTTP/1.1\r\n" +
+                "Host: " + host + "\r\n" +
+                "\r\n";
+        socket.getOutputStream().write(request.getBytes());
+    }
+
+    private void readHeaderLine(Socket socket) throws IOException {
+        String headerLine;
+        while (!(headerLine = readLine(socket)).isBlank()) {
+            int colonPos = headerLine.indexOf(':');
+            String key = headerLine.substring(0, colonPos).toLowerCase();
+            String value = headerLine.substring(colonPos + 1).trim();
+            headerFields.put(key, value);
+        }
     }
 
     private int getContentLength() {
