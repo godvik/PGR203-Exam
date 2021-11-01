@@ -23,13 +23,24 @@ public class QuestionnaireServerTest {
         assertEquals("Education", questionnaire.getName());
     }
 
+    @Test
+    void shouldReturnQuestionnairesFromServer() throws IOException {
+        Questionnaire educationQuestionnaire = new Questionnaire();
+        educationQuestionnaire.setName("Education");
+        Questionnaire healthQuestionnaire = new Questionnaire();
+        healthQuestionnaire.setName("Health");
 
+        server.setQuestionnaire(List.of(educationQuestionnaire, healthQuestionnaire));
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/listQuestionnaires");
+        assertEquals("<option value=Education>Education</option>" +
+                        "<option value=Health>Health</option>",
+                    client.getMessageBody());
+    }
 
     @Test
     void shouldPostNewQuestion() throws IOException {
         Questionnaire educationQuestionnaire = new Questionnaire();
         educationQuestionnaire.setName("Education");
-
         Questionnaire healthQuestionnaire = new Questionnaire();
         healthQuestionnaire.setName("Health");
 
