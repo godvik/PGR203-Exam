@@ -18,6 +18,14 @@ public class QuestionnaireServerTest {
     }
 
     @Test
+    void shouldPostNewQuestionnaire() throws IOException {
+        PostHttpClient client = new PostHttpClient("localhost", server.getPort(), "/api/questionnaire", "questionnaire=Education");
+        assertEquals(200, client.getResponseCode());
+        Questionnaire questionnaire = server.getQuestionaire.get(0);
+        assertEquals("Education", questionnaire.getName());
+    }
+
+    @Test
     void shouldPostNewQuestion() throws IOException {
         String questionQuery = "On a scale from 1-5, how happy are you?";
         String encodedQuestion = encode(questionQuery, StandardCharsets.UTF_8);
