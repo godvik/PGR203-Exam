@@ -3,7 +3,11 @@ package no.kristiania.http;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Map;
+
+import static java.net.URLDecoder.decode;
 
 public class HttpMessage {
 
@@ -58,6 +62,40 @@ public class HttpMessage {
                 "Host: " + host + "\r\n" +
                 "\r\n";
         socket.getOutputStream().write(request.getBytes());
+    }
+
+    static void response200(Socket clientSocket, String contentType, String responseText) throws IOException {
+        String response = "HTTP/1.1 200 OK" + "\r\n" +
+                "Content-Length: " + responseText.getBytes().length + "\r\n" +
+                "Content-Type: " + contentType + "\r\n" +
+                "\r\n" +
+                responseText;
+        clientSocket.getOutputStream().write(response.getBytes());
+    }
+
+    static void response404(Socket clientSocket, String requestTarget, String contentType) throws IOException {
+        String responseText = "File not found " + requestTarget;
+        String response = "HTTP/1.1 404 Not found" + "\r\n" +
+                "Content-Length: " + responseText.getBytes().length + "\r\n" +
+                "Content-Type: " + contentType + "\r\n" +
+                "Connection: close" + "\r\n" +
+                "\r\n" +
+                responseText;
+        clientSocket.getOutputStream().write(response.getBytes());
+    }
+
+    static Map<String, String> parseQuery(String query) {
+        Map<String, String> parameters = new HashMap<>();
+        if (query != null) {
+            for (String parameter : query.split("&")) {
+                int equalPos = parameter.indexOf('=');
+                String key = parameter.substring(0, equalPos);
+                String value = parameter.substring(equalPos + 1);
+                value = decode(value, StandardCharsets.UTF_8);
+                parameters.put(key, value);
+            }
+        }
+        return parameters;
     }
 
     public String getMessageBody() {
