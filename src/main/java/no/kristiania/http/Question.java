@@ -1,17 +1,17 @@
 package no.kristiania.http;
 
 public class Question {
-    private String questionniare;
+    private Questionnaire questionnaire;
     private String title;
     private String text;
 
     public String getQuestionniare() {
-        return questionniare;
+        return questionnaire.getName();
     }
 
-    public void setQuestionniare(String questionniare) {
-        this.questionniare = questionniare;
-    }
+//    public void setQuestionniare(String questionniare) {
+//        this.questionniare = questionniare;
+//    }
 
     public String getTitle() {
         return title;

@@ -14,8 +14,8 @@ public class HttpServer {
 
     private ServerSocket serverSocket;
     private Path rootDirectory;
-    private List<String> questionnaires;
     private final List<Question> questions = new ArrayList<>();
+    private List<Questionnaire> questionnaire = new ArrayList<>();
 
     public HttpServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
@@ -58,7 +58,15 @@ public class HttpServer {
                 questions.add(question);
 
                 HttpMessage.response200(clientSocket, contentType, "Question added.");
-        }
+        } else if (requestTarget.equals("/api/questionnaire")) {
+            Map<String, String> parameters = HttpMessage.parseQuery(new HttpMessage(clientSocket).getMessageBody());
+            Questionnaire questionnaire1 = new Questionnaire();
+            questionnaire1.setName(parameters.get("questionnaire"));
+            questionnaire.add(questionnaire1);
+
+            HttpMessage.response200(clientSocket, contentType, "Questionnaire added.");
+
+            }
             if ((rootDirectory != null && Files.exists(rootDirectory.resolve(requestTarget.substring(1))))) {
                 String responseText = Files.readString(rootDirectory.resolve(requestTarget.substring(1)));
 
@@ -76,11 +84,17 @@ public class HttpServer {
         this.rootDirectory = rootDirectory;
     }
 
-    public void setQuestionToQuestionnaire(List<String> question) {
-        this.questionnaires = question;
-    }
+
 
     public List<Question> getQuestion() {
         return questions;
+    }
+
+    public List<Questionnaire> getQuestionnaire() {
+        return questionnaire;
+    }
+
+    public void setQuestionnaire(List<Questionnaire> questionnaire) {
+        this.questionnaire = questionnaire;
     }
 }
