@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ public class HttpServer {
 
 
     private ServerSocket serverSocket;
+    private List<String> questionnaires;
     private Path rootDirectory;
     private final List<Question> questions = new ArrayList<>();
     private List<Questionnaire> questionnaire = new ArrayList<>();
@@ -21,6 +23,16 @@ public class HttpServer {
         serverSocket = new ServerSocket(port);
 
         new Thread(this::handleClients).start();
+    }
+
+    public void setQuestionnaires(List<String> questionnaires) {
+        this.questionnaires = questionnaires;
+    }
+
+    public static void main(String[] args) throws IOException {
+        HttpServer server = new HttpServer(8080);
+        server.setQuestionnaires(List.of("Education", "Health"));
+        server.setRoot(Paths.get("src/main/resources/"));
     }
 
     private void handleClients() {
@@ -66,7 +78,14 @@ public class HttpServer {
 
             HttpMessage.response200(clientSocket, contentType, "Questionnaire added.");
 
+            } else if (requestTarget.equals("/api/listQuestionnaires")) {
+                String responstext = "";
+                for (Questionnaire questionnaires : questionnaire) {
+                    responstext += "<option value=" + questionnaires.getName() + ">" + questionnaires.getName() + "</option>";
+                }
+                HttpMessage.response200(clientSocket, contentType, responstext);
             }
+
             if ((rootDirectory != null && Files.exists(rootDirectory.resolve(requestTarget.substring(1))))) {
                 String responseText = Files.readString(rootDirectory.resolve(requestTarget.substring(1)));
 
