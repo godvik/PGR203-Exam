@@ -7,10 +7,21 @@
   </head>
   <body>
     <h1>Questionnaire</h1>
+
+    <form action="GET" action="/api/alternativeAnswers">
+      <label
+        >Questionnaire:
+        <select id="questionnaire" name="questionnaire"
+      /></label>
+      <label>Option: <input type="text" name="option" /></label>
+      <button>Go</button>
+    </form>
+
     <div id="questions"></div>
 
     <div>
-      <a href="newQuestionnaire.html">Add new questions</a>
+      <a href="newQuestionnaire.html">Add new questionnaire</a>
+      <a href="newQuestions.html">Add new questions</a>
       <a href="addOption.html">Add new options</a>
     </div>
   </body>
