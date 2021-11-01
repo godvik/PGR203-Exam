@@ -51,7 +51,7 @@ public class HttpServer {
             if (requestTarget.equals("/api/questions")) {
                 Map<String, String> parameters = HttpMessage.parseQuery(new HttpMessage(clientSocket).getMessageBody());
                 Question question = new Question();
-                question.setQuestionniare(parameters.get("questionnaire"));
+                question.setQuestionnaire(parameters.get("questionnaire"));
                 question.setTitle(parameters.get("title"));
                 question.setText(parameters.get("text"));
 

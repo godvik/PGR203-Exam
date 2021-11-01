@@ -23,22 +23,24 @@ public class QuestionnaireServerTest {
         assertEquals("Education", questionnaire.getName());
     }
 
+
+
     @Test
     void shouldPostNewQuestion() throws IOException {
-        Questionnaire questionnaire = new Questionnaire();
-        questionnaire.setName("Education");
+        Questionnaire educationQuestionnaire = new Questionnaire();
+        educationQuestionnaire.setName("Education");
 
-        Questionnaire questionnaire2 = new Questionnaire();
-        questionnaire2.setName("Health");
+        Questionnaire healthQuestionnaire = new Questionnaire();
+        healthQuestionnaire.setName("Health");
 
         String questionQuery = "On a scale from 1-5, how happy are you?";
         String encodedQuestion = encode(questionQuery, StandardCharsets.UTF_8);
-        server.setQuestionnaire(List.of(questionnaire, questionnaire2));
+        server.setQuestionnaire(List.of(educationQuestionnaire, healthQuestionnaire));
         PostHttpClient client = new PostHttpClient("localhost", server.getPort(), "/api/questions",
                 "questionnaire=Education&title=Happy&text=" + encodedQuestion);
         assertEquals(200, client.getResponseCode());
         Question question = server.getQuestion().get(0);
-        assertEquals("Health", question.getQuestionniare());
+        assertEquals("Education", question.getQuestionnaire());
         assertEquals("Happy", question.getTitle());
         assertEquals("On a scale from 1-5, how happy are you?", question.getText());
     }
