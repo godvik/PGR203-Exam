@@ -19,7 +19,7 @@ public class QuestionnaireServerTest {
     void shouldPostNewQuestionnaire() throws IOException {
         PostHttpClient client = new PostHttpClient("localhost", server.getPort(), "/api/questionnaire", "questionnaire=Education");
         assertEquals(200, client.getResponseCode());
-        Questionnaire questionnaire = server.getQuestionnaire().get(0);
+        Questionnaire questionnaire = server.getQuestionnaires().get(0);
         assertEquals("Education", questionnaire.getName());
     }
 

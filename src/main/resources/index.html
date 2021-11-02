@@ -8,7 +8,7 @@
   <body>
     <h1>Questionnaire</h1>
 
-    <form action="GET" action="/api/alternativeAnswers">
+    <form action="GET" action="/api/listQuestionnaires">
       <label for="questionnaire">Choose questionnaire:</label>
       <select id="questionnaire" name="questionnaire">
     </select>
@@ -24,6 +24,15 @@
     </div>
   </body>
   <script>
+    fetch('/api/listQuestionnaires')
+            .then(function (response) {
+              return response.text();
+            })
+            .then(function (text) {
+              document.getElementById('questionnaire').innerHTML = text;
+            });
+
+
     fetch('/api/questions')
       .then(function (response) {
         return response.text();

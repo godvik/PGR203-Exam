@@ -13,11 +13,10 @@ import java.util.Map;
 public class HttpServer {
 
 
-    private ServerSocket serverSocket;
+    private final ServerSocket serverSocket;
     private List<String> questionnaires;
     private Path rootDirectory;
     private final List<Question> questions = new ArrayList<>();
-    private List<Questionnaire> questionnaire = new ArrayList<>();
 
     public HttpServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
@@ -52,15 +51,12 @@ public class HttpServer {
 
             String[] requestLine = HttpMessage.readLine(clientSocket).split(" ");
             String requestTarget = requestLine[1];
-            String contentType = "text/plain";
 
-            if (requestTarget.endsWith(".html")) {
-                contentType = "text/html";
-            } else if (requestTarget.endsWith(".css")) {
-                contentType = "text/css";
-            }
+        String contentType = getContentType(requestTarget);
 
-            if (requestTarget.equals("/api/questions")) {
+
+        switch (requestTarget) {
+            case "/api/questions": {
                 Map<String, String> parameters = HttpMessage.parseQuery(new HttpMessage(clientSocket).getMessageBody());
                 Question question = new Question();
                 question.setQuestionnaire(parameters.get("questionnaire"));
@@ -70,22 +66,32 @@ public class HttpServer {
                 questions.add(question);
 
                 HttpMessage.response200(clientSocket, contentType, "Question added.");
-        } else if (requestTarget.equals("/api/questionnaire")) {
-            Map<String, String> parameters = HttpMessage.parseQuery(new HttpMessage(clientSocket).getMessageBody());
-            Questionnaire questionnaire1 = new Questionnaire();
-            questionnaire1.setName(parameters.get("questionnaire"));
-            questionnaire.add(questionnaire1);
+                break;
+            }
+            case "/api/questionnaire": {
+                Map<String, String> parameters = HttpMessage.parseQuery(new HttpMessage(clientSocket).getMessageBody());
+                Questionnaire questionnaire1 = new Questionnaire();
+                questionnaire1.setName(parameters.get("questionnaire"));
+                questionnaires.add(questionnaire1.getName());
 
-            HttpMessage.response200(clientSocket, contentType, "Questionnaire added.");
+                HttpMessage.response200(clientSocket, contentType, "Questionnaire added.");
 
-            } else if (requestTarget.equals("/api/listQuestionnaires")) {
+                break;
+            }
+            case "/api/listQuestionnaires":
                 String responstext = "";
-                for (Questionnaire questionnaires : questionnaire) {
-                    responstext += "<option value=" + questionnaires.getName() + ">" + questionnaires.getName() + "</option>";
+                for (String questionnaires : questionnaires) {
+                    responstext += "<option value=" + questionnaires + ">" + questionnaires + "</option>";
                 }
                 HttpMessage.response200(clientSocket, contentType, responstext);
-            }
+                break;
 
+
+            default:
+                if (requestTarget.equals("/")) {
+                    requestTarget = "/index.html";
+                   contentType = getContentType(requestTarget);
+                }
             if ((rootDirectory != null && Files.exists(rootDirectory.resolve(requestTarget.substring(1))))) {
                 String responseText = Files.readString(rootDirectory.resolve(requestTarget.substring(1)));
 
@@ -93,6 +99,17 @@ public class HttpServer {
             } else {
                 HttpMessage.response404(clientSocket, requestTarget, contentType);
             }
+        }
+    }
+
+    private String getContentType(String requestTarget) {
+        String contentType = "text/plain";
+        if (requestTarget.endsWith(".html")) {
+            contentType = "text/html";
+        } else if (requestTarget.endsWith(".css")) {
+            contentType = "text/css";
+        }
+        return contentType;
     }
 
     public int getPort() {
@@ -109,11 +126,7 @@ public class HttpServer {
         return questions;
     }
 
-    public List<Questionnaire> getQuestionnaire() {
-        return questionnaire;
-    }
-
-    public void setQuestionnaire(List<Questionnaire> questionnaire) {
-        this.questionnaire = questionnaire;
+    public List<String> getQuestionnaires() {
+        return questionnaires;
     }
 }
