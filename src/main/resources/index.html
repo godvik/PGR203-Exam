@@ -15,13 +15,15 @@
     <button>Go</button>
     </form>
 
-    <div id="questions"></div>
+   
 
     <div>
       <a href="newQuestionnaire.html">Add new questionnaire</a>
       <a href="newQuestions.html">Add new questions</a>
       <a href="addOption.html">Add new options</a>
     </div>
+
+    <div id="questions"></div>
   </body>
   <script>
     fetch('/api/listQuestionnaires')
@@ -33,7 +35,7 @@
             });
 
 
-    fetch('/api/questions')
+    fetch('/api/listOutQuestions')
       .then(function (response) {
         return response.text();
       })

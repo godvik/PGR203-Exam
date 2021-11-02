@@ -56,4 +56,24 @@ public class QuestionnaireServerTest {
         assertEquals("Happy", question.getTitle());
         assertEquals("On a scale from 1-5, how happy are you?", question.getText());
     }
+
+    @Test
+    void shouldReturnQuestionsFromServer() throws IOException {
+        Questionnaire educationQuestionnaire = new Questionnaire();
+        educationQuestionnaire.setName("Education");
+
+        server.getQuestionnaires().add(educationQuestionnaire);
+        String questionQuery = "On a scale from 1-5, how happy are you?";
+        Question question = new Question();
+        question.setQuestionnaire(server.getQuestionnaires().get(0).getName());;
+        question.setText(questionQuery);
+        question.setTitle("Happy");
+        server.getQuestion().add(question);
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/listOutQuestions");
+
+
+        assertEquals("<p>Education: Happy: On a scale from 1-5, how happy are you?</p>",
+                client.getMessageBody());
+    }
 }

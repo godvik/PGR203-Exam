@@ -59,7 +59,8 @@ public class HttpServer {
                 questions.add(question);
 
                 contentType = HttpMessage.getContentType(requestTarget);
-                HttpMessage.response200(clientSocket, contentType, "");
+                String responseText = "Question added to " + question.getQuestionnaire();
+                HttpMessage.response200(clientSocket, contentType, responseText);
                 break;
             }
             case "/api/questionnaire": {
@@ -79,6 +80,14 @@ public class HttpServer {
                 }
 
                 contentType = HttpMessage.getContentType(requestTarget);
+                HttpMessage.response200(clientSocket, contentType, responseText);
+                break;
+            }
+            case  "/api/listOutQuestions": {
+                String responseText = "";
+                for (Question question : questions) {
+                    responseText += "<p>" + question.getQuestionnaire() + ": " + question.getTitle() + ": " + question.getText() + "</p>";
+                }
                 HttpMessage.response200(clientSocket, contentType, responseText);
                 break;
             }

@@ -6,9 +6,17 @@
     <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
-    <h1>Add question member</h1>
+    <h1>Add question to questionnaire</h1>
 
+  
+     
+    
+   
+   
+   
     <form method="POST" action="/api/questions">
+      <label for="questionnaire">Choose questionnaire:</label>
+      <select id="questionnaire" name="questionnaire"> </select>
       <label>Question title: <input type="text" name="title" /></label>
       <label>Question text: <input type="text" name="text" /></label>
       <label>Label for 1: <input type="text" name="low_label" /></label>
@@ -20,4 +28,13 @@
       <a href=".">Return to front page</a>
     </div>
   </body>
+  <script>
+    fetch('/api/listQuestionnaires')
+            .then(function (response) {
+              return response.text();
+            })
+            .then(function (text) {
+              document.getElementById('questionnaire').innerHTML = text;
+            });
+  </script>
 </html>
