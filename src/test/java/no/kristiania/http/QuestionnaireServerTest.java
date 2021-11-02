@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import static java.net.URLEncoder.encode;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,8 +16,8 @@ public class QuestionnaireServerTest {
 
     @Test
     void shouldPostNewQuestionnaire() throws IOException {
-        PostHttpClient client = new PostHttpClient("localhost", server.getPort(), "/api/questionnaire", "questionnaire=Education");
-        assertEquals(200, client.getResponseCode());
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/questionnaire", "questionnaire=Education");
+        assertEquals(200, client.getStatusCode());
         Questionnaire questionnaire = server.getQuestionnaires().get(0);
         assertEquals("Education", questionnaire.getName());
     }
@@ -49,9 +48,9 @@ public class QuestionnaireServerTest {
         String encodedQuestion = encode(questionQuery, StandardCharsets.UTF_8);
         server.questionnaires.add(educationQuestionnaire);
         server.questionnaires.add(healthQuestionnaire);
-        PostHttpClient client = new PostHttpClient("localhost", server.getPort(), "/api/questions",
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/questions",
                 "questionnaire=Education&title=Happy&text=" + encodedQuestion);
-        assertEquals(200, client.getResponseCode());
+        assertEquals(200, client.getStatusCode());
         Question question = server.getQuestion().get(0);
         assertEquals("Education", question.getQuestionnaire());
         assertEquals("Happy", question.getTitle());
