@@ -11,13 +11,8 @@ public class HttpClient {
         Socket socket = new Socket(host, port);
         HttpMessage.executeRequest(host, requestTarget, socket);
         httpMessage = new HttpMessage(socket);
-
         this.statusCode = Integer.parseInt(httpMessage.getStartLine().split(" ")[1]);
-
-
     }
-
-
 
     public int getStatusCode() {
         return statusCode;

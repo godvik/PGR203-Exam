@@ -45,7 +45,6 @@ class HttpServerTest {
         Files.write(Paths.get("target/test-classes/example-file.html"), fileContent.getBytes());
         HttpClient client = new HttpClient("localhost", server.getPort(), "/example-file.html");
         assertEquals("text/html", client.getHeader("Content-Type"));
-
     }
 
     @Test
@@ -53,6 +52,4 @@ class HttpServerTest {
         assertEquals(404, new HttpClient("localhost", server.getPort(), "/does-not-exist").getStatusCode());
         assertEquals(404, new HttpClient("localhost", server.getPort(), "/does-not-exist").getStatusCode());
     }
-
-
 }

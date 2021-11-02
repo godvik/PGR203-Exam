@@ -31,10 +31,11 @@ public class QuestionnaireServerTest {
         healthQuestionnaire.setName("Health");
         server.questionnaires.add(educationQuestionnaire);
         server.questionnaires.add(healthQuestionnaire);
+
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/listQuestionnaires");
         assertEquals("<option value=Education>Education</option>" +
                         "<option value=Health>Health</option>",
-                    client.getMessageBody());
+                client.getMessageBody());
     }
 
     @Test

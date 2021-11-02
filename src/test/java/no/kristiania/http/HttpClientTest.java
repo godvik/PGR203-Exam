@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HttpClientTest {
 
     @Test
-    void shouldRecieveStatus200() throws IOException {
+    void shouldReceiveStatus200() throws IOException {
         HttpClient client = new HttpClient("httpbin.org", 80, "/status/200");
         assertEquals(200, client.getStatusCode());
     }

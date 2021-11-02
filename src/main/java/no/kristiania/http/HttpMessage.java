@@ -21,7 +21,6 @@ public class HttpMessage {
         if (headerFields.containsKey("Content-Length".toLowerCase())) {
             messageBody = readLine(socket, getContentLength());
         }
-
     }
 
     static String readLine(Socket socket) throws IOException {
@@ -97,6 +96,26 @@ public class HttpMessage {
             }
         }
         return parameters;
+    }
+
+    static String getContentType(String requestTarget) {
+        String contentType = "text/plain";
+        if (requestTarget.endsWith(".html")) {
+            contentType = "text/html";
+        } else if (requestTarget.endsWith(".css")) {
+            contentType = "text/css";
+        }
+        return contentType;
+    }
+
+    static void executeRequest(String host, String requestTarget, String messageBody, Socket socket) throws IOException {
+        String request = "POST " + requestTarget + " HTTP/1.1\r\n" +
+                "Host: " + host + "\r\n" +
+                "Content-Length: " + messageBody.length() + "\r\n" +
+                "Connection: close\r\n" +
+                "\r\n" +
+                messageBody;
+        socket.getOutputStream().write(request.getBytes());
     }
 
     public String getMessageBody() {
