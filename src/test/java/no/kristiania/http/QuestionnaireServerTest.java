@@ -30,7 +30,7 @@ public class QuestionnaireServerTest {
         Questionnaire healthQuestionnaire = new Questionnaire();
         healthQuestionnaire.setName("Health");
 
-        server.setQuestionnaire(List.of(educationQuestionnaire, healthQuestionnaire));
+        server.setQuestionnaires(List.of(educationQuestionnaire, healthQuestionnaire));
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/listQuestionnaires");
         assertEquals("<option value=Education>Education</option>" +
                         "<option value=Health>Health</option>",
@@ -46,7 +46,7 @@ public class QuestionnaireServerTest {
 
         String questionQuery = "On a scale from 1-5, how happy are you?";
         String encodedQuestion = encode(questionQuery, StandardCharsets.UTF_8);
-        server.setQuestionnaire(List.of(educationQuestionnaire, healthQuestionnaire));
+        server.setQuestionnaires(List.of(educationQuestionnaire, healthQuestionnaire));
         PostHttpClient client = new PostHttpClient("localhost", server.getPort(), "/api/questions",
                 "questionnaire=Education&title=Happy&text=" + encodedQuestion);
         assertEquals(200, client.getResponseCode());

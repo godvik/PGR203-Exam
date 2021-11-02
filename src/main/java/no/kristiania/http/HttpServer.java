@@ -14,7 +14,7 @@ public class HttpServer {
 
 
     private final ServerSocket serverSocket;
-    private List<String> questionnaires;
+    private  List<Questionnaire> questionnaires = new ArrayList<>();
     private Path rootDirectory;
     private final List<Question> questions = new ArrayList<>();
 
@@ -24,13 +24,15 @@ public class HttpServer {
         new Thread(this::handleClients).start();
     }
 
-    public void setQuestionnaires(List<String> questionnaires) {
-        this.questionnaires = questionnaires;
-    }
+
 
     public static void main(String[] args) throws IOException {
-        HttpServer server = new HttpServer(8080);
-        server.setQuestionnaires(List.of("Education", "Health"));
+        HttpServer server = new HttpServer(9090);
+        Questionnaire educationQuestionnaire = new Questionnaire();
+        educationQuestionnaire.setName("Education");
+        Questionnaire healthQuestionnaire = new Questionnaire();
+        healthQuestionnaire.setName("Health");
+        server.setQuestionnaires(List.of(educationQuestionnaire, healthQuestionnaire));
         server.setRoot(Paths.get("src/main/resources/"));
     }
 
@@ -70,18 +72,17 @@ public class HttpServer {
             }
             case "/api/questionnaire": {
                 Map<String, String> parameters = HttpMessage.parseQuery(new HttpMessage(clientSocket).getMessageBody());
-                Questionnaire questionnaire1 = new Questionnaire();
-                questionnaire1.setName(parameters.get("questionnaire"));
-                questionnaires.add(questionnaire1.getName());
-
+                Questionnaire newQuestionnaire = new Questionnaire();
+                newQuestionnaire.setName(parameters.get("questionnaire"));
+                questionnaires.add(newQuestionnaire);
                 HttpMessage.response200(clientSocket, contentType, "Questionnaire added.");
 
                 break;
             }
             case "/api/listQuestionnaires":
                 String responstext = "";
-                for (String questionnaires : questionnaires) {
-                    responstext += "<option value=" + questionnaires + ">" + questionnaires + "</option>";
+                for (Questionnaire questionnaires : questionnaires) {
+                    responstext += "<option value=" + questionnaires.getName() + ">" + questionnaires.getName() + "</option>";
                 }
                 HttpMessage.response200(clientSocket, contentType, responstext);
                 break;
@@ -126,7 +127,10 @@ public class HttpServer {
         return questions;
     }
 
-    public List<String> getQuestionnaires() {
+    public List<Questionnaire> getQuestionnaires() {
         return questionnaires;
+    }
+    public void setQuestionnaires(List<Questionnaire> questionnaires) {
+        this.questionnaires = questionnaires;
     }
 }
