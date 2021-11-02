@@ -14,7 +14,7 @@ public class HttpServer {
 
 
     private final ServerSocket serverSocket;
-    private  List<Questionnaire> questionnaires = new ArrayList<>();
+    public final List<Questionnaire> questionnaires = new ArrayList<>();
     private Path rootDirectory;
     private final List<Question> questions = new ArrayList<>();
 
@@ -32,7 +32,8 @@ public class HttpServer {
         educationQuestionnaire.setName("Education");
         Questionnaire healthQuestionnaire = new Questionnaire();
         healthQuestionnaire.setName("Health");
-        server.setQuestionnaires(List.of(educationQuestionnaire, healthQuestionnaire));
+        server.questionnaires.add(educationQuestionnaire);
+        server.questionnaires.add(healthQuestionnaire);
         server.setRoot(Paths.get("src/main/resources/"));
     }
 
@@ -130,7 +131,7 @@ public class HttpServer {
     public List<Questionnaire> getQuestionnaires() {
         return questionnaires;
     }
-    public void setQuestionnaires(List<Questionnaire> questionnaires) {
-        this.questionnaires = questionnaires;
-    }
+//    public void setQuestionnaires(List<Questionnaire> questionnaires) {
+//        this.questionnaires = questionnaires;
+//    }
 }
