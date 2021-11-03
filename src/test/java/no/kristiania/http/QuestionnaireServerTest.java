@@ -99,12 +99,13 @@ public class QuestionnaireServerTest {
         server.getQuestion().add(secondDummyQuestion);
         String optionText = encode( "The education is very good", StandardCharsets.UTF_8);
 
-        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/alternativeAnswers", "questions=On+a+scale+from+1-5%2C+how+happy+are+you%3F&option=" + optionText);
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/alternativeAnswers",
+                "question=On+a+scale+from+1-5%2C+how+happy+are+you%3F&option=" + optionText);
 
         assertEquals(200, client.getStatusCode());
-        Option option = server.getOption().get(0);
+        Option option = server.getOptions().get(0);
         assertEquals("On a scale from 1-5, how happy are you?", option.getQuestion());
-        assertEquals("The education is very good", option.getName());
+        assertEquals("The education is very good", option.getText());
 
     }
 }

@@ -16,6 +16,7 @@ public class HttpServer {
     private Path rootDirectory;
     public final List<Questionnaire> questionnaires = new ArrayList<>();
     private final List<Question> questions = new ArrayList<>();
+    private final List<Option> options = new ArrayList<>();
 
     public HttpServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
@@ -126,6 +127,17 @@ public class HttpServer {
                 HttpMessage.response200(clientSocket, contentType, responseText);
                 break;
             }
+            case "/api/alternativeAnswers": {
+                Map<String, String> parameters = HttpMessage.parseQuery(new HttpMessage(clientSocket).getMessageBody());
+                Option newOption = new Option();
+                newOption.setQuestion(parameters.get("question"));
+                newOption.setText(parameters.get("option"));
+                options.add(newOption);
+
+                contentType = HttpMessage.getContentType(requestTarget);
+                HttpMessage.response200(clientSocket, contentType, "Option added");
+                break;
+            }
             default:
                 if (requestTarget.equals("/")) {
                     requestTarget = "/index.html";
@@ -156,5 +168,9 @@ public class HttpServer {
 
     public List<Questionnaire> getQuestionnaires() {
         return questionnaires;
+    }
+
+    public List<Option> getOptions() {
+        return options;
     }
 }

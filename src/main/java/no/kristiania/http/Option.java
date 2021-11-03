@@ -1,13 +1,22 @@
 package no.kristiania.http;
 
 public class Option {
-    private String name;
+    private String text;
+    private String question;
 
-    public void setName(String name) {
-        this.name = name;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public String getName() {
-        return name;
+    public String getText() {
+        return text;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
     }
 }
