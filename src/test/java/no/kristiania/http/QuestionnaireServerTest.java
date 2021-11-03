@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static java.net.URLEncoder.encode;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class QuestionnaireServerTest {
@@ -49,11 +50,10 @@ public class QuestionnaireServerTest {
         server.questionnaires.add(educationQuestionnaire);
         server.questionnaires.add(healthQuestionnaire);
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/questions",
-                "questionnaire=Education&title=Happy&text=" + encodedQuestion);
+                "questionnaire=Education&text=" + encodedQuestion);
         assertEquals(200, client.getStatusCode());
         Question question = server.getQuestion().get(0);
         assertEquals("Education", question.getQuestionnaire());
-        assertEquals("Happy", question.getTitle());
         assertEquals("On a scale from 1-5, how happy are you?", question.getText());
     }
 
@@ -67,13 +67,10 @@ public class QuestionnaireServerTest {
         Question question = new Question();
         question.setQuestionnaire(server.getQuestionnaires().get(0).getName());;
         question.setText(questionQuery);
-        question.setTitle("Happy");
         server.getQuestion().add(question);
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/listOutQuestions");
-
-
-        assertEquals("<p>Education: Happy: On a scale from 1-5, how happy are you?</p>",
-                client.getMessageBody());
+        System.out.println(client.getMessageBody());
+        assertThat(client.getMessageBody()).contains("<legend>On a scale from 1-5, how happy are you?</legend>");
     }
 }

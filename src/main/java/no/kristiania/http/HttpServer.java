@@ -54,7 +54,6 @@ public class HttpServer {
                 Map<String, String> parameters = HttpMessage.parseQuery(new HttpMessage(clientSocket).getMessageBody());
                 Question question = new Question();
                 question.setQuestionnaire(parameters.get("questionnaire"));
-                question.setTitle(parameters.get("title"));
                 question.setText(parameters.get("text"));
                 questions.add(question);
 
@@ -86,13 +85,12 @@ public class HttpServer {
             case  "/api/listOutQuestions": {
                 String responseText = "";
                 for (Question question : questions) {
-//                    responseText += "<p>" + question.getQuestionnaire() + ": " + question.getTitle() + ": " + question.getText() + "</p>";
                     responseText += "<h1>" + question.getQuestionnaire() + "</h1>" +
                             "<form action=\"POST\">\n" +
                             "        <fieldset>\n" +
-                            "          <legend>" + question.getTitle() + "</legend>\n" +
+                            "          <legend>" + question.getText() + "</legend>\n" +
                             "          <div class=\"form-options\">\n" +
-                            "            <p>" + question.getText() + "</p>\n" +
+                            "            <p>" + "Test" + "</p>\n" +
                             "\n" +
                             "            <div class=\"option-wrapper\">\n" +
                             "              <label for=\"1\">Helt uenig</label>\n" +
@@ -108,7 +106,6 @@ public class HttpServer {
                             "        </fieldset>\n" +
                             "        <input type=\"submit\" value=\"Submit\" />\n" +
                             "      </form>";
-
                 }
 
 
