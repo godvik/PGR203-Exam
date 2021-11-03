@@ -24,17 +24,17 @@ public class HttpServer {
     }
 
     public static void main(String[] args) throws IOException {
-        HttpServer server = new HttpServer(8080);
-        Questionnaire educationQuestionnaire = new Questionnaire();
-        educationQuestionnaire.setName("Education");
-        Questionnaire healthQuestionnaire = new Questionnaire();
-        healthQuestionnaire.setName("Health");
-        server.questionnaires.add(educationQuestionnaire);
-        server.questionnaires.add(healthQuestionnaire);
-
-        Question dummyQuestion = new Question();
-        dummyQuestion.setText("How are you?");
-        server.questions.add(dummyQuestion);
+        HttpServer server = new HttpServer(9080);
+//        Questionnaire educationQuestionnaire = new Questionnaire();
+//        educationQuestionnaire.setName("Education");
+//        Questionnaire healthQuestionnaire = new Questionnaire();
+//        healthQuestionnaire.setName("Health");
+//        server.questionnaires.add(educationQuestionnaire);
+//        server.questionnaires.add(healthQuestionnaire);
+//
+//        Question dummyQuestion = new Question();
+//        dummyQuestion.setText("How are you?");
+//        server.questions.add(dummyQuestion);
         server.setRoot(Paths.get("src/main/resources/"));
     }
 
@@ -94,23 +94,12 @@ public class HttpServer {
                             "<form action=\"POST\">\n" +
                             "        <fieldset>\n" +
                             "          <legend>" + question.getText() + "</legend>\n" +
-                            "          <div class=\"form-options\">\n" +
-                            "            <p>" + "Test" + "</p>\n" +
-                            "\n" +
-                            "            <div class=\"option-wrapper\">\n" +
-                            "              <label for=\"1\">Helt uenig</label>\n" +
-                            "              <input type=\"radio\" value=\"1\" id=\"1\" name=\"question1\" />\n" +
-                            "              <input type=\"radio\" value=\"2\" id=\"2\" name=\"question1\" />\n" +
-                            "              <input type=\"radio\" value=\"3\" id=\"3\" name=\"question1\" />\n" +
-                            "              <input type=\"radio\" value=\"4\" id=\"4\" name=\"question1\" />\n" +
-                            "              <input type=\"radio\" value=\"5\" id=\"5\" name=\"question1\" />\n" +
-                            "              <label for=\"5\">Helt enig</label>\n" +
-                            "            </div>\n" +
-                            "          </div>\n" +
+                                            listOptionText(question) +
                             "          <br />\n" +
                             "        </fieldset>\n" +
                             "        <input type=\"submit\" value=\"Submit\" />\n" +
                             "      </form>";
+
                 }
 
 
@@ -153,6 +142,30 @@ public class HttpServer {
                 }
         }
     }
+
+    private String listOptionText(Question question) {
+        String optionText = "";
+        for (Option option :
+                options) {
+            if (question.getText().equals(option.getQuestion())) {
+                optionText += "<div class=\"form-options\">\n" +
+                        "            <p>" + option.getText() + "</p>\n" +
+                        "\n" +
+                        "            <div class=\"option-wrapper\">\n" +
+                        "              <label for=\"1\">Helt uenig</label>\n" +
+                        "              <input type=\"radio\" value=\"1\" id=\"1\" name=\"question1\" />\n" +
+                        "              <input type=\"radio\" value=\"2\" id=\"2\" name=\"question1\" />\n" +
+                        "              <input type=\"radio\" value=\"3\" id=\"3\" name=\"question1\" />\n" +
+                        "              <input type=\"radio\" value=\"4\" id=\"4\" name=\"question1\" />\n" +
+                        "              <input type=\"radio\" value=\"5\" id=\"5\" name=\"question1\" />\n" +
+                        "              <label for=\"5\">Helt enig</label>\n" +
+                        "            </div>\n" +
+                        "          </div>\n";
+            }
+        }
+        return optionText;
+    }
+
 
     public int getPort() {
         return serverSocket.getLocalPort();

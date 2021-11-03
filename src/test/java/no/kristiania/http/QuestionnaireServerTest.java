@@ -70,7 +70,6 @@ public class QuestionnaireServerTest {
         server.getQuestion().add(question);
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/listOutQuestions");
-        System.out.println(client.getMessageBody());
         assertThat(client.getMessageBody()).contains("<legend>On a scale from 1-5, how happy are you?</legend>");
     }
 
