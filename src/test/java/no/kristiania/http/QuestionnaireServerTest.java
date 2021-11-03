@@ -88,4 +88,23 @@ public class QuestionnaireServerTest {
                         "<option value=On a scale from 1-5, how good is our exam?>On a scale from 1-5, how good is our exam?</option>",
                 client.getMessageBody());
     }
+
+    @Test
+    void shouldPostOptionsToQuestion() throws IOException {
+        Question firstDummyQuestion = new Question();
+        firstDummyQuestion.setText("On a scale from 1-5, how happy are you?");
+        Question secondDummyQuestion = new Question();
+        secondDummyQuestion.setText("Test fra 1 - 5 hvor noob er Aastralis?");
+        server.getQuestion().add(firstDummyQuestion);
+        server.getQuestion().add(secondDummyQuestion);
+        String optionText = encode( "The education is very good", StandardCharsets.UTF_8);
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/alternativeAnswers", "questions=On+a+scale+from+1-5%2C+how+happy+are+you%3F&option=" + optionText);
+
+        assertEquals(200, client.getStatusCode());
+        Option option = server.getOption().get(0);
+        assertEquals("On a scale from 1-5, how happy are you?", option.getQuestion());
+        assertEquals("The education is very good", option.getName());
+
+    }
 }
