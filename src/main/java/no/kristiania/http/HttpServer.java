@@ -30,6 +30,10 @@ public class HttpServer {
         healthQuestionnaire.setName("Health");
         server.questionnaires.add(educationQuestionnaire);
         server.questionnaires.add(healthQuestionnaire);
+
+        Question dummyQuestion = new Question();
+        dummyQuestion.setText("How are you?");
+        server.questions.add(dummyQuestion);
         server.setRoot(Paths.get("src/main/resources/"));
     }
 
@@ -109,6 +113,16 @@ public class HttpServer {
                 }
 
 
+                HttpMessage.response200(clientSocket, contentType, responseText);
+                break;
+            }
+            case "/api/questionOptions": {
+                String responseText = "";
+                for (Question question : questions) {
+                    responseText += "<option value=" + question.getText() + ">" + question.getText() + "</option>";
+                }
+
+                contentType = HttpMessage.getContentType(requestTarget);
                 HttpMessage.response200(clientSocket, contentType, responseText);
                 break;
             }

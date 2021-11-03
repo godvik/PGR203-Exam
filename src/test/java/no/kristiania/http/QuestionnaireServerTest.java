@@ -73,4 +73,19 @@ public class QuestionnaireServerTest {
         System.out.println(client.getMessageBody());
         assertThat(client.getMessageBody()).contains("<legend>On a scale from 1-5, how happy are you?</legend>");
     }
+
+    @Test
+    void listQuestionsWhenAddingOption() throws IOException {
+        Question firstDummyQuestion = new Question();
+        firstDummyQuestion.setText("On a scale from 1-5, how happy are you?");
+        Question secondDummyQuestion = new Question();
+        secondDummyQuestion.setText("On a scale from 1-5, how good is our exam?");
+        server.getQuestion().add(firstDummyQuestion);
+        server.getQuestion().add(secondDummyQuestion);
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/questionOptions");
+        assertEquals("<option value=On a scale from 1-5, how happy are you?>On a scale from 1-5, how happy are you?</option>" +
+                        "<option value=On a scale from 1-5, how good is our exam?>On a scale from 1-5, how good is our exam?</option>",
+                client.getMessageBody());
+    }
 }
