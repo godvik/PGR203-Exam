@@ -23,13 +23,17 @@ public class HttpServer {
     }
 
     public static void main(String[] args) throws IOException {
-        HttpServer server = new HttpServer(9090);
+        HttpServer server = new HttpServer(8080);
         Questionnaire educationQuestionnaire = new Questionnaire();
         educationQuestionnaire.setName("Education");
         Questionnaire healthQuestionnaire = new Questionnaire();
         healthQuestionnaire.setName("Health");
         server.questionnaires.add(educationQuestionnaire);
         server.questionnaires.add(healthQuestionnaire);
+
+        Question dummyQuestion = new Question();
+        dummyQuestion.setText("How are you?");
+        server.questions.add(dummyQuestion);
         server.setRoot(Paths.get("src/main/resources/"));
     }
 
@@ -54,7 +58,6 @@ public class HttpServer {
                 Map<String, String> parameters = HttpMessage.parseQuery(new HttpMessage(clientSocket).getMessageBody());
                 Question question = new Question();
                 question.setQuestionnaire(parameters.get("questionnaire"));
-                question.setTitle(parameters.get("title"));
                 question.setText(parameters.get("text"));
                 questions.add(question);
 
@@ -86,8 +89,40 @@ public class HttpServer {
             case  "/api/listOutQuestions": {
                 String responseText = "";
                 for (Question question : questions) {
-                    responseText += "<p>" + question.getQuestionnaire() + ": " + question.getTitle() + ": " + question.getText() + "</p>";
+                    responseText += "<h1>" + question.getQuestionnaire() + "</h1>" +
+                            "<form action=\"POST\">\n" +
+                            "        <fieldset>\n" +
+                            "          <legend>" + question.getText() + "</legend>\n" +
+                            "          <div class=\"form-options\">\n" +
+                            "            <p>" + "Test" + "</p>\n" +
+                            "\n" +
+                            "            <div class=\"option-wrapper\">\n" +
+                            "              <label for=\"1\">Helt uenig</label>\n" +
+                            "              <input type=\"radio\" value=\"1\" id=\"1\" name=\"question1\" />\n" +
+                            "              <input type=\"radio\" value=\"2\" id=\"2\" name=\"question1\" />\n" +
+                            "              <input type=\"radio\" value=\"3\" id=\"3\" name=\"question1\" />\n" +
+                            "              <input type=\"radio\" value=\"4\" id=\"4\" name=\"question1\" />\n" +
+                            "              <input type=\"radio\" value=\"5\" id=\"5\" name=\"question1\" />\n" +
+                            "              <label for=\"5\">Helt enig</label>\n" +
+                            "            </div>\n" +
+                            "          </div>\n" +
+                            "          <br />\n" +
+                            "        </fieldset>\n" +
+                            "        <input type=\"submit\" value=\"Submit\" />\n" +
+                            "      </form>";
                 }
+
+
+                HttpMessage.response200(clientSocket, contentType, responseText);
+                break;
+            }
+            case "/api/questionOptions": {
+                String responseText = "";
+                for (Question question : questions) {
+                    responseText += "<option value=" + question.getText() + ">" + question.getText() + "</option>";
+                }
+
+                contentType = HttpMessage.getContentType(requestTarget);
                 HttpMessage.response200(clientSocket, contentType, responseText);
                 break;
             }

@@ -1,3 +1,9 @@
 body {
   background-color: darkgrey;
 }
+
+.form-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
