@@ -23,7 +23,7 @@ public class HttpServer {
     }
 
     public static void main(String[] args) throws IOException {
-        HttpServer server = new HttpServer(9090);
+        HttpServer server = new HttpServer(8080);
         Questionnaire educationQuestionnaire = new Questionnaire();
         educationQuestionnaire.setName("Education");
         Questionnaire healthQuestionnaire = new Questionnaire();
@@ -86,8 +86,32 @@ public class HttpServer {
             case  "/api/listOutQuestions": {
                 String responseText = "";
                 for (Question question : questions) {
-                    responseText += "<p>" + question.getQuestionnaire() + ": " + question.getTitle() + ": " + question.getText() + "</p>";
+//                    responseText += "<p>" + question.getQuestionnaire() + ": " + question.getTitle() + ": " + question.getText() + "</p>";
+                    responseText += "<h1>" + question.getQuestionnaire() + "</h1>" +
+                            "<form action=\"POST\">\n" +
+                            "        <fieldset>\n" +
+                            "          <legend>" + question.getTitle() + "</legend>\n" +
+                            "          <div class=\"form-options\">\n" +
+                            "            <p>" + question.getText() + "</p>\n" +
+                            "\n" +
+                            "            <div class=\"option-wrapper\">\n" +
+                            "              <label for=\"1\">Helt uenig</label>\n" +
+                            "              <input type=\"radio\" value=\"1\" id=\"1\" name=\"question1\" />\n" +
+                            "              <input type=\"radio\" value=\"2\" id=\"2\" name=\"question1\" />\n" +
+                            "              <input type=\"radio\" value=\"3\" id=\"3\" name=\"question1\" />\n" +
+                            "              <input type=\"radio\" value=\"4\" id=\"4\" name=\"question1\" />\n" +
+                            "              <input type=\"radio\" value=\"5\" id=\"5\" name=\"question1\" />\n" +
+                            "              <label for=\"5\">Helt enig</label>\n" +
+                            "            </div>\n" +
+                            "          </div>\n" +
+                            "          <br />\n" +
+                            "        </fieldset>\n" +
+                            "        <input type=\"submit\" value=\"Submit\" />\n" +
+                            "      </form>";
+
                 }
+
+
                 HttpMessage.response200(clientSocket, contentType, responseText);
                 break;
             }
