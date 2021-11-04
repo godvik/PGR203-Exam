@@ -16,10 +16,12 @@ class QuestionnaireDaoTest {
         Questionnaire questionnaire1 = TestData.exampleQuestionnaire();
         Questionnaire questionnaire2 = TestData.exampleQuestionnaire();
 
-        dao.save(questionnaire1);
-        dao.save(questionnaire2);
+        dao.insert(questionnaire1);
+        dao.insert(questionnaire2);
+        questionnaire1.setID(dao.insert(questionnaire1));
+        questionnaire2.setID(dao.insert(questionnaire2));
 
-        assertThat(dao.listAll())
+        assertThat(dao.list())
                 .extracting(Questionnaire::getId)
                 .contains(questionnaire1.getId(), questionnaire2.getId());
     }
