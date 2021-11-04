@@ -5,7 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractDao<Type> {
+public abstract class AbstractDao<DaoType> {
 
     private final DataSource dataSource;
 
@@ -13,7 +13,7 @@ public abstract class AbstractDao<Type> {
         this.dataSource = dataSource;
     }
 
-    public long insert(Type obj, String query, String column) throws SQLException {
+    public long insert(DaoType obj, String query, String column) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
                 insertIntoDatabase(obj, preparedStatement);
@@ -27,11 +27,11 @@ public abstract class AbstractDao<Type> {
         }
     }
 
-    public List<Type> list(String query) throws SQLException {
+    public List<DaoType> list(String query) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 try (ResultSet rs = statement.executeQuery()) {
-                    List<Type> list = new ArrayList<>();
+                    List<DaoType> list = new ArrayList<>();
                     while (rs.next()) {
                         list.add(readFromResultSet(rs));
                     }
@@ -41,7 +41,7 @@ public abstract class AbstractDao<Type> {
         }
     }
 
-    protected abstract Type readFromResultSet(ResultSet rs) throws SQLException;
+    protected abstract DaoType readFromResultSet(ResultSet rs) throws SQLException;
 
-    protected abstract void insertIntoDatabase(Type obj, PreparedStatement statement) throws SQLException;
+    protected abstract void insertIntoDatabase(DaoType obj, PreparedStatement statement) throws SQLException;
 }
