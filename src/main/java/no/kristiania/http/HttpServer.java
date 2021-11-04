@@ -1,5 +1,9 @@
 package no.kristiania.http;
 
+import no.kristiania.objects.Option;
+import no.kristiania.objects.Question;
+import no.kristiania.objects.Questionnaire;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

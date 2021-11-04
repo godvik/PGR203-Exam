@@ -1,4 +1,4 @@
-package no.kristiania.http;
+package no.kristiania.objects;
 
 public class Option {
     private String text;

@@ -1,6 +1,6 @@
 package no.kristiania.dao;
 
-import no.kristiania.http.Questionnaire;
+import no.kristiania.objects.Questionnaire;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
 

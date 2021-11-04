@@ -1,5 +1,8 @@
 package no.kristiania.http;
 
+import no.kristiania.objects.Option;
+import no.kristiania.objects.Question;
+import no.kristiania.objects.Questionnaire;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
