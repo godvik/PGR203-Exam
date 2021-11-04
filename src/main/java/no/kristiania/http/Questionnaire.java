@@ -3,6 +3,7 @@ package no.kristiania.http;
 public class Questionnaire {
 
     private String name;
+    private long id;
 
     public String getName() {
         return name;
@@ -17,5 +18,13 @@ public class Questionnaire {
         return "Questionnaire{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    public void setID(long id) {
+     this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 }
