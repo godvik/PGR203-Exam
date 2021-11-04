@@ -24,7 +24,7 @@ public class HttpServer {
     }
 
     public static void main(String[] args) throws IOException {
-        HttpServer server = new HttpServer(9080);
+        HttpServer server = new HttpServer(9090);
 //        Questionnaire educationQuestionnaire = new Questionnaire();
 //        educationQuestionnaire.setName("Education");
 //        Questionnaire healthQuestionnaire = new Questionnaire();
