@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Kristiania Questionnaire</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="main-container">
+    <h1>Questionnaire application - PGR203 exam</h1>
+
+  
+
+    <div class="nav-bar">
+      <button class="menu-btn"> <a href="newQuestionnaire.html">Create Questionnaire</a></button>
+      <button class="menu-btn"> <a href="edit.html">Edit Questionnaires</a></button>
+      <button class="menu-btn"> <a href="answers.html">Show answers</a></button>
+    </div>
+
+   
+<h2 class="available-q">Available questionnaires:</h2>
+  <div id="questionnaireList"></div>
+</div>
+  </body>
+  <script>
+    fetch('/api/listOutQuestions')
+            .then(function (response) {
+              return response.text();
+            })
+            .then(function (text) {
+              document.getElementById('questionnaireList').innerHTML = text;
+            });
+   
+  </script>
+</html>

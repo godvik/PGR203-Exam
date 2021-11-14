@@ -1,0 +1,24 @@
+@startuml
+
+actor Browser
+participant HttpServer
+participant controllers
+participant AddQuestionnaireController
+participant QuestionnaireDao
+database questionnaire_db
+
+Browser -> HttpServer: POST /api/questionnaire
+HttpServer -> controllers: get("/api/questionnaire")
+HttpServer <- controllers: AddQuestionnaireController
+HttpServer -> AddQuestionnaireController: response = handle(request)
+AddQuestionnaireController -> AddQuestionnaireController: questionnaire = new Questionnaire()
+AddQuestionnaireController -> AddQuestionnaireController: questionnaire = questionnaire.setName(parameters.get("questionnaire")
+AddQuestionnaireController -> QuestionnaireDao: insert(questionnaire)
+QuestionnaireDao -> questionnaire_db: INSERT INTO questionnaires ...
+HttpServer <- AddQuestionnaireController: OK 200
+HttpServer -> HttpServer: response.write(socket)
+Browser <- HttpServer: HTTP/1.1 200 OK
+
+
+
+@enduml
