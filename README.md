@@ -74,7 +74,7 @@ Every dao extends the AbstractDao, so all the CRUD methods are inherited. This m
   * Edit every entity.
   * Delete cascade on questionnaire. All tied questions and options will also ble deleted. NB: this is optional. You can also delete a single question and all options tied to it will be deleted.
   * List out a summary of answers tied to a questionnaire.
-* Test: good line coverage at 89% line.
+* Test: good line coverage at 89%.
 * Fixed if user goes to "/" root issue.
 * Used abstract dao-class to avoid duplicated crud-code.
 * Fixed the content-type issue we had in class with CSS.
