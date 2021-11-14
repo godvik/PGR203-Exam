@@ -26,21 +26,19 @@ class HttpServerTest {
     @Test
     void shouldIncludeRequestTargetIn404Message() throws IOException {
         HttpClient client = new HttpClient("localhost", server.getPort(), "/does-not-exist");
-        assertEquals("File not found /does-not-exist", client.getMessageBody());
+        assertEquals("File not found: /does-not-exist", client.getMessageBody());
     }
 
     @Test
     void shouldReadFileFromDisk() throws IOException {
         String fileContent = "A file created at " + LocalDateTime.now();
         Files.write(Paths.get("target/test-classes/example-file.txt"), fileContent.getBytes());
-        server.setRoot(Paths.get("target/test-classes"));
         HttpClient client = new HttpClient("localhost", server.getPort(), "/example-file.txt");
         assertEquals(fileContent, client.getMessageBody());
     }
 
     @Test
     void shouldUseFileExtensionForContentType() throws IOException {
-        server.setRoot(Paths.get("target/test-classes"));
         String fileContent = "<p>Hello</p> " + LocalTime.now();
         Files.write(Paths.get("target/test-classes/example-file.html"), fileContent.getBytes());
         HttpClient client = new HttpClient("localhost", server.getPort(), "/example-file.html");

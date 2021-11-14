@@ -1,9 +1,73 @@
 body {
   background-color: darkgrey;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .form-options {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.menu-btn {
+  
+  padding: 10px;
+  background-color:beige;
+}
+
+a {
+  text-decoration: none;
+}
+
+.questionnaire, .questions, .options {
+  margin: 20px;
+}
+
+.questions > label  {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+
+.form-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+  
+}
+
+th{
+  width: 120px;
+}
+
+#questionnaireList {
+  width: 1400px;
+  margin-top: 50px;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.nav-bar {
+  margin-bottom: 30px;
 }

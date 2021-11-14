@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Create questionnaire | Kristiania Questionnaire</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="main-container">
+    <h1>Edit questionnaires</h1>
+    <div>
+        <button class="menu-btn"> <a href="editQuestionnaire.html">Edit questionnaire</a></button>
+        <button class="menu-btn"> <a href="editQuestions.html">Edit Questions</a></button>
+        <button class="menu-btn"> <a href="editOptions.html">Edit Options</a></button>
+        <button class="menu-btn"> <a href="deleteQuestionnaire.html">Delete questionnaire</a></button>
+        <button class="menu-btn"> <a href="deleteQuestion.html">Delete question</a></button>
+        <button class="menu-btn"> <a href="deleteOption.html">Delete option</a></button>
+      </div>
+    
+
+    <h2>Delete options</h2>
+    <form class="questions" method="POST" action="/api/deleteOption">
+        <label for="option">Option to delete:</label>
+        <select id="option" name="option"></select>
+       
+        <button>Delete</button>
+    </form>
+
+    <div>
+      <a href=".">Return to front page</a>
+    </div>
+  </div>
+    <script>
+
+        fetch('/api/optionsList')
+      .then(function (response) {
+        return response.text();
+      })
+      .then(function (text) {
+        document.getElementById('option').innerHTML = text;
+      });
+    </script>
+  </body>
+</html>

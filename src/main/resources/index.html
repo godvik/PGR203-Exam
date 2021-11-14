@@ -6,60 +6,30 @@
     <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
-    <h1>Questionnaire</h1>
+    <div class="main-container">
+    <h1>Questionnaire application - PGR203 exam</h1>
 
-    <form action="GET" action="/api/listQuestionnaires">
-      <label for="questionnaire">Choose questionnaire:</label>
-      <select id="questionnaire" name="questionnaire"></select>
-      <button>Go</button>
-    </form>
+  
 
-    <div>
-      <a href="newQuestionnaire.html">Add new questionnaire</a>
-      <a href="newQuestions.html">Add new questions</a>
-      <a href="addOption.html">Add new options</a>
+    <div class="nav-bar">
+      <button class="menu-btn"> <a href="newQuestionnaire.html">Create Questionnaire</a></button>
+      <button class="menu-btn"> <a href="edit.html">Edit Questionnaires</a></button>
+      <button class="menu-btn"> <a href="answers.html">Show answers</a></button>
     </div>
 
-    <div id="questions">
-      <h1>Questionnaire name</h1>
-
-      <form action="POST">
-        <fieldset>
-          <legend>Question title</legend>
-          <div class="form-options">
-            <p>Question text</p>
-
-            <div class="option-wrapper">
-              <label for="1">Helt uenig</label>
-              <input type="radio" value="1" id="1" name="question1" />
-              <input type="radio" value="2" id="2" name="question1" />
-              <input type="radio" value="3" id="3" name="question1" />
-              <input type="radio" value="4" id="4" name="question1" />
-              <input type="radio" value="5" id="5" name="question1" />
-              <label for="5">Helt enig</label>
-            </div>
-          </div>
-          <br />
-        </fieldset>
-        <input type="submit" value="Submit" />
-      </form>
-    </div>
+   
+<h2 class="available-q">Available questionnaires:</h2>
+  <div id="questionnaireList"></div>
+</div>
   </body>
   <script>
-    fetch('/api/listQuestionnaires')
-      .then(function (response) {
-        return response.text();
-      })
-      .then(function (text) {
-        document.getElementById('questionnaire').innerHTML = text;
-      });
-
     fetch('/api/listOutQuestions')
-      .then(function (response) {
-        return response.text();
-      })
-      .then(function (text) {
-        document.getElementById('questions').innerHTML = text;
-      });
+            .then(function (response) {
+              return response.text();
+            })
+            .then(function (text) {
+              document.getElementById('questionnaireList').innerHTML = text;
+            });
+   
   </script>
 </html>

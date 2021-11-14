@@ -1,7 +1,6 @@
 package no.kristiania.objects;
 
 public class Questionnaire {
-
     private String name;
     private long id;
 
@@ -13,14 +12,7 @@ public class Questionnaire {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Questionnaire{" +
-                "name='" + name + '\'' +
-                '}';
-    }
-
-    public void setID(long id) {
+    public void setId(long id) {
      this.id = id;
     }
 

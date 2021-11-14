@@ -5,33 +5,47 @@ import java.net.Socket;
 
 public class HttpClient {
     private final int statusCode;
-    private HttpMessage httpMessage;
+    private final HttpMessage httpMessage;
 
-    // This constructor handles GET requests.
+    // Constructor to handle GET requests
     public HttpClient(String host, int port, String requestTarget) throws IOException {
         Socket socket = new Socket(host, port);
-        HttpMessage.executeRequest(host, requestTarget, socket);
-        httpMessage = new HttpMessage(socket);
-        this.statusCode = Integer.parseInt(httpMessage.getStartLine().split(" ")[1]);
-    }
-    // This constructor handles POST requests.
-    public HttpClient(String host, int port, String requestTarget, String messageBody) throws IOException {
-        Socket socket = new Socket(host, port);
-        HttpMessage.executeRequest(host, requestTarget, messageBody, socket);
-        String responseMessage = HttpMessage.readLine(socket);
-        this.statusCode = Integer.parseInt(responseMessage.split(" ")[1]);
+        String request = "GET " + requestTarget + " HTTP/1.1\r\n" +
+                "Host: " + host + "\r\n" +
+                "Connection: close\r\n" +
+                "\r\n";
+        socket.getOutputStream().write(request.getBytes());
 
+        httpMessage = new HttpMessage(socket);
+        String[] statusLine = httpMessage.startLine.split(" ");
+        this.statusCode = Integer.parseInt(statusLine[1]);
+    }
+
+    // Constructor to handle POST request
+    public HttpClient(String host, int port, String requestTarget, String contentBody) throws IOException {
+        Socket socket = new Socket(host, port);
+        String request = "POST " + requestTarget + " HTTP/1.1\r\n" +
+                "Host: " + host + "\r\n" +
+                "Connection: close\r\n" +
+                "Content-Length: " + contentBody.length() + "\r\n" +
+                "\r\n" +
+                contentBody;
+        socket.getOutputStream().write(request.getBytes());
+
+        httpMessage = new HttpMessage(socket);
+        String[] statusLine = httpMessage.startLine.split(" ");
+        this.statusCode = Integer.parseInt(statusLine[1]);
     }
 
     public int getStatusCode() {
         return statusCode;
     }
 
-    public String getHeader(String headerName) {
-        return httpMessage.getHeader(headerName);
+    public String getMessageBody() {
+        return httpMessage.messageBody;
     }
 
-    public String getMessageBody() {
-        return httpMessage.getMessageBody();
+    public String getHeader(String headerName) {
+        return httpMessage.getHeader(headerName);
     }
 }

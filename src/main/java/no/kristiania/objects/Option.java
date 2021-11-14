@@ -2,7 +2,8 @@ package no.kristiania.objects;
 
 public class Option {
     private String text;
-    private String question;
+    private long question;
+    private long id;
 
     public void setText(String text) {
         this.text = text;
@@ -12,11 +13,19 @@ public class Option {
         return text;
     }
 
-    public String getQuestion() {
+    public long getQuestion() {
         return question;
     }
 
-    public void setQuestion(String question) {
+    public void setQuestion(long question) {
         this.question = question;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 }
