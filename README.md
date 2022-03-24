@@ -1,6 +1,8 @@
 [![Java CI with Maven](https://github.com/kristiania-pgr203-2021/pgr203-exam-OrjanSkotnes/actions/workflows/maven.yml/badge.svg)](https://github.com/kristiania-pgr203-2021/pgr203-exam-OrjanSkotnes/actions/workflows/maven.yml)
 
-Our github repository https://github.com/kristiania-pgr203-2021/pgr203-exam-OrjanSkotnes
+Eksamen i PGR203 - Avansert Java. Denne eksamenen ble sensurert til karakteren A. 
+
+Orginalt repository https://github.com/kristiania-pgr203-2021/pgr203-exam-OrjanSkotnes
 
 # PGR203 - Exam - Questionnaires
 
